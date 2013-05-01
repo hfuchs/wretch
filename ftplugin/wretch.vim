@@ -34,7 +34,7 @@ setlocal comments+=:.	" don't delete this comment - it protects the TAB!
 " }}}1
 
 " Mappings.
-" Fold Mappings{{{1
+" Fold Mappings {{{1
 " TODO l: prefix?
 map <silent><buffer>   <localleader>0           :set foldlevel=99999<CR>
 map <silent><buffer>   <localleader>9           :set foldlevel=8<CR>
@@ -47,14 +47,14 @@ map <silent><buffer>   <localleader>3           :set foldlevel=2<CR>
 map <silent><buffer>   <localleader>2           :set foldlevel=1<CR>
 map <silent><buffer>   <localleader>1           :set foldlevel=0<CR>
 " }}}1
-" Checkbox Mappings{{{1
+" Checkbox Mappings {{{1
 map <silent><buffer>   <localleader>cb          :call InsertCheckbox('')<CR>
 map <silent><buffer>   <localleader>c%          :call InsertCheckbox('0% ')<CR>
 map <silent><buffer>   <localleader>cd          :call DeleteCheckbox()<CR>
 map <silent><buffer>   <localleader>cx          :call ToggleCheckbox(line('.'),'')<CR>
 map <silent><buffer>   <localleader>c-          :call ToggleCheckbox(line('.'),'-')<CR>
 " }}}1
-" Conveniencee Mappings{{{1
+" Convenience Mappings {{{1
 " TODO ,,T: Insert heading below current body?
 inoremap <silent><buffer>  <localleader>h    <C-o>:call InsertHeading()<CR>
 nnoremap <silent><buffer>  <localleader>h    :call InsertHeading()<CR>
@@ -63,6 +63,11 @@ nnoremap <silent><buffer>  <localleader>b    :call InsertBody()<CR>
 noremap <silent><buffer>   <localleader><    :call ShiftHeading('<')<CR>
 noremap <silent><buffer>   <localleader>>    :call ShiftHeading('>')<CR>
 noremap <silent><buffer>   <localleader>-    :call InsertDivider()<CR>
+" }}}1
+" Interlinking Mappings {{{1
+nnoremap <buffer> <localleader>j :call JumpToTargetID()<CR>
+" This time we really want to escape to normal mode first.
+inoremap <buffer> <localleader>j :call <ESC>JumpToTargetID()<CR>
 " }}}1
 
 " Functions.
@@ -328,6 +333,83 @@ function! ShiftHeading(direction)
         else
             echoe "ShiftHeading: wrong argument!"
         end
+    endif
+endfunction
+" }}}2
+" }}}1
+" Interlinking {{{1
+" JumpToTargetID {{{2
+" Implements a interlinking feature for wretch.  To define a target,
+" just place square brackets around it: '[target]'.  To link to it,
+" simply write '[-> target]' or just '[> target]'.
+" If you are on a line containing [> string], cursor positioned inside
+" the brackets, then calling this function (usually by hitting
+" '<localleader>j') will jump to the (nearest) occurence of [string].
+" Really simple but rather effective.
+function! JumpToTargetID()
+    " For links that spread over two lines, we need to take the previous
+    " and next line in consideration and join these with a special
+    " separator (l:sep).
+    let l:sep     = '!:-:!'
+    let l:lines   = join( getline( line('.') - 1 , line('.') + 1 ), l:sep )
+    let l:pattern = '\m\[-\?>\s\+\([^\[\]]\+\)\]'
+    let l:links   = [[]]
+    let l:timeout = 1000
+
+    " Ugly special test necessary with the multi-line approach: Don't
+    " jump if there's no bracket character on /this/ line (would
+    " otherwise jump also if only the adjacent lines had links).
+    if match(getline('.'), '[\[\]]') == -1
+        echo "No ID found on this line."
+        return
+    endif
+
+    " Find all occurences of pattern in string and note their position.
+    let l:i = 1
+    while l:i
+        let l:begin = match(l:lines, l:pattern, 0, l:i)
+        if l:begin != -1
+            let l:begin -= len(l:sep)
+            " The two substitute()s simply normalize multi-line links
+            " and create valid target IDs (I can't figure out how to
+            " search() later without magic, so I quote everything here).
+            let l:end    = matchend(l:lines, l:pattern, 0, l:i) - len(l:sep)
+            let l:id     = matchstr(l:lines, l:pattern, 0, l:i)
+            let l:target = substitute(l:id, l:sep.'\s*:\?\s\+', ' ', '')
+            let l:target = substitute(l:target, l:pattern, '\\\[\1\\\]', '')
+            let l:links += [[ l:begin, l:end, l:target ]]
+            let l:i += 1
+            " For debugging only:
+            "echo "Id: " l:id "Target: " l:target "Links: " l:links
+        else
+            break
+        endif
+    endwhile
+
+    " If the list is still empty, quit now.
+    if l:links == [[]]
+        echo "No ID found on this line."
+        return
+    else
+        call remove(l:links, 0)
+    endif
+
+    " Check whether the cursor is placed inside of one of the links and
+    " jump there if so (search()'s 's' parameter sets a jump mark to get
+    " back with ^o).
+    let l:cursorpos = getpos(".")[2] + strlen( getline( line('.') - 1 ) )
+    for l:link in l:links
+        if index(range(l:link[0], l:link[1]), l:cursorpos) != -1
+            if search(l:link[2], 'sw', 0, l:timeout) == 0
+                echo "Target ID not found!"
+            endif
+            return
+        endif
+    endfor
+
+    " If the cursor's positioned elsewhere, use the last jumpID.
+    if search(l:links[-1][2], 'sw', 0, l:timeout) == 0
+        echo "Target ID not found!"
     endif
 endfunction
 " }}}2
