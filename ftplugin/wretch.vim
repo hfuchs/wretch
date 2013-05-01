@@ -17,8 +17,8 @@ setlocal noexpandtab
 setlocal nosmarttab
 setlocal softtabstop=0
 setlocal tabstop=4
-setlocal shiftwidth=4
-"setlocal foldlevel=20
+setlocal shiftwidth=4   " I wish sth. like `set sw=&ts` would work.
+setlocal foldlevel=0
 "setlocal foldcolumn=1
 setlocal foldmethod=expr
 setlocal foldexpr=MyFoldLevel(v:lnum)
@@ -36,23 +36,23 @@ setlocal comments+=:.	" don't delete this comment - it protects the TAB!
 " Mappings.
 " Fold Mappings {{{1
 " TODO l: prefix?
-map <silent><buffer>   <localleader>0           :set foldlevel=99999<CR>
-map <silent><buffer>   <localleader>9           :set foldlevel=8<CR>
-map <silent><buffer>   <localleader>8           :set foldlevel=7<CR>
-map <silent><buffer>   <localleader>7           :set foldlevel=6<CR>
-map <silent><buffer>   <localleader>6           :set foldlevel=5<CR>
-map <silent><buffer>   <localleader>5           :set foldlevel=4<CR>
-map <silent><buffer>   <localleader>4           :set foldlevel=3<CR>
-map <silent><buffer>   <localleader>3           :set foldlevel=2<CR>
-map <silent><buffer>   <localleader>2           :set foldlevel=1<CR>
-map <silent><buffer>   <localleader>1           :set foldlevel=0<CR>
+map <silent><buffer>   <localleader>0    :set foldlevel=99999<CR>
+map <silent><buffer>   <localleader>9    :set foldlevel=8<CR>
+map <silent><buffer>   <localleader>8    :set foldlevel=7<CR>
+map <silent><buffer>   <localleader>7    :set foldlevel=6<CR>
+map <silent><buffer>   <localleader>6    :set foldlevel=5<CR>
+map <silent><buffer>   <localleader>5    :set foldlevel=4<CR>
+map <silent><buffer>   <localleader>4    :set foldlevel=3<CR>
+map <silent><buffer>   <localleader>3    :set foldlevel=2<CR>
+map <silent><buffer>   <localleader>2    :set foldlevel=1<CR>
+map <silent><buffer>   <localleader>1    :set foldlevel=0<CR>
 " }}}1
 " Checkbox Mappings {{{1
-map <silent><buffer>   <localleader>cb          :call InsertCheckbox('')<CR>
-map <silent><buffer>   <localleader>c%          :call InsertCheckbox('0% ')<CR>
-map <silent><buffer>   <localleader>cd          :call DeleteCheckbox()<CR>
-map <silent><buffer>   <localleader>cx          :call ToggleCheckbox(line('.'),'')<CR>
-map <silent><buffer>   <localleader>c-          :call ToggleCheckbox(line('.'),'-')<CR>
+map <silent><buffer>   <localleader>cb    :call InsertCheckbox('')<CR>
+map <silent><buffer>   <localleader>c%    :call InsertCheckbox('0% ')<CR>
+map <silent><buffer>   <localleader>cd    :call DeleteCheckbox()<CR>
+map <silent><buffer>   <localleader>cx    :call ToggleCheckbox(line('.'),'')<CR>
+map <silent><buffer>   <localleader>c-    :call ToggleCheckbox(line('.'),'-')<CR>
 " }}}1
 " Convenience Mappings {{{1
 " TODO ,,T: Insert heading below current body?
@@ -136,21 +136,28 @@ function! MyFoldLevel(line)
 endfunction
 " }}}2
 " MyFoldText {{{2
+" By default, Vim will replace \t with just a single space when folding.
+" For beautiful alignment of folds, we replace \t by an equivalent
+" amount of spaces here.  Also note the absence of width-filling dashes
+" in wretch's folds; that's done by setting 'fillchars' (see above).
 function! MyFoldText()
-    let l:lines = v:foldend-v:foldstart
-    let l:lines = ( l:lines > 1 ) ? " (".l:lines.")" : ""
+    let l:lines  = v:foldend - v:foldstart
+    let l:lines  = ( l:lines > 1 ) ? " (".l:lines.")" : ""
+    let l:spaces = repeat(' ', &ts)
 
-    " TODO Everything here assumes ts=4.
     if ( IsHeading(v:foldstart) )
-        let l:sub = substitute(getline(v:foldstart), "\t", "   ", "")
-        let l:sub = substitute(l:sub, "\t", "    ", "g")
+        " In order for everything to nicely line up at &ts columns,
+        " I need to replace the first <TAB> with &ts-1 spaces.  Hence
+        " two steps here.
+        let l:sub = substitute( getline(v:foldstart), "\t", repeat(' ', &ts - 1), "" )
+        let l:sub = substitute( l:sub               , "\t", l:spaces            , "g" )
     else
-        let l:sub   = '    (text)'
-        let l:sub = repeat('    ', len(v:folddashes)-1) . l:sub
+        " TODO '(text)'?  Perhaps '(rst text; 2013-05-01)'?
+        let l:sub = repeat( l:spaces , len(v:folddashes) - 1 ) . l:spaces . '(text)'
     endif
     " Multibyte string length counting proudly presented by :h strlen().
-    let l:len = strlen(substitute(l:sub, ".", "x", "g"))
-    return l:sub.' '.repeat( '-', &tw - l:len - len(l:lines) -1 ).l:lines
+    let l:len = strlen( substitute(l:sub, ".", "x", "g") )
+    return l:sub . ' ' . repeat( '-', &tw - l:len - len(l:lines) - 1 ) . l:lines
 endfunction
 "}}}2
 " Checkbox Functions {{{1
