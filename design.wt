@@ -3,19 +3,19 @@
 .			[x] 100% Version Control
 .				[x] Create github repository
 {----------------------------------------------------------------------}
-{rst}
+{syn:rst}
 https://github.com/hfuchs/wretch
 {----------------------------------------------------------------------}
 .				[x] Keep local mirror
 .			Reference Docs
 .				5 Minute Vimscript
 {----------------------------------------------------------------------}
-{rst}
+{syn:rst}
 http://andrewscala.com/vimscript/
 {----------------------------------------------------------------------}
 .				[Organizing Vim Plugin Files] for Pathogen & Vundle
 {----------------------------------------------------------------------}
-{rst}
+{syn:rst}
 http://stevelosh.com/blog/2011/09/writing-vim-plugins/#be-pathogen-compatible
 
 In `Learn Vimscript the Hard Way`_ there's a section about »Plugin
@@ -25,7 +25,7 @@ Layout in the Dark Ages«.
 {----------------------------------------------------------------------}
 .				Random
 {----------------------------------------------------------------------}
-{rst}
+{syntax:rst}
 Create a create-interlink function that takes ranges?
 http://stackoverflow.com/questions/4452282/vim-pass-a-char-or-word-to-your-function
 http://vim.1045645.n5.nabble.com/Variable-replacement-interpolation-dereferencing-td1193031.html
@@ -41,7 +41,7 @@ http://vim.wikia.com/wiki/Different_syntax_highlighting_within_regions_of_a_file
 .			Reference Projects
 .			[Testing]
 {----------------------------------------------------------------------}
-{rst}
+{syn:rst}
 While hacking Vimoutliner, I always dreamt of doing fully automatic
 tests using ``screen`` dumps.  So, I do it with tmux::
 
@@ -67,7 +67,7 @@ btw: The tmux distribution includes a Bash completion script in::
 .			[Deployment], Staging
 .				[x] Using Vundle
 {----------------------------------------------------------------------}
-{rst}
+{syn:rst}
 By using Vundle, I can use my local repository to test new features and
 push stable versions to Github.  .vimrc entry::
 
@@ -82,13 +82,13 @@ Note: *no* trailing slash.  Updates with::
 .				'I' should jump to beginning of heading, not line
 .				[x] Integrate my interlinking system
 {----------------------------------------------------------------------}
-{rst}
+{syn:rst}
 2013-05-01, Copied the functions and bindings verbatim from my
 .vimoutlinerrc.  Works.
 {----------------------------------------------------------------------}
 .				[_] Boost interlink usefulness
 {----------------------------------------------------------------------}
-{rst}
+{syn:rst}
 I'd like to write a command that can deal with region markers.   For
 inspiration, see
 
@@ -96,7 +96,7 @@ inspiration, see
 {----------------------------------------------------------------------}
 .				[x] Remove dependency on ts=sw=4
 {----------------------------------------------------------------------}
-{rst}
+{syntax:rst}
 2013-05-01, Wasn't half as bad as I thought.
 {----------------------------------------------------------------------}
 .				{rst} -> {syn:rst}
@@ -107,7 +107,7 @@ inspiration, see
 .				[x] Implement insert mode mappings
 .				[x] It's "headings", not "titles"!
 {----------------------------------------------------------------------}
-{rst}
+{syn:rst}
 That way I can use ,,t for "time" (whatever that may be).  Oh and, [>
 Implement "insert date"].
 {----------------------------------------------------------------------}
@@ -119,7 +119,7 @@ behaviour?
 .				Script-tag, execute with ,,r
 .		Publishing
 .			Name
-{rst}
+{syn:rst}
 I'm pretty much settled on wretch.  What else is there?
 wretchmode?  The working name for the first shot was noutliner.
 
@@ -135,19 +135,19 @@ wretchmode?  The working name for the first shot was noutliner.
 .				Provider
 .					gandi.net
 {----------------------------------------------------------------------}
-{rst}
+{syn:rst}
 They still seem nice.  Simple Hosting?  Comes with ssh and git.
 https://www.gandi.net/hosting/simple?type=phpmysql
 {----------------------------------------------------------------------}
 .				Name
 {----------------------------------------------------------------------}
-{rst}
+{syn:rst}
 How about `wretch.io`_?  The only one not currently taken.
 Fallback?  There's always hfuchs.net/wretch, of course.
 {----------------------------------------------------------------------}
 .			Migration
 {----------------------------------------------------------------------}
-{rst}
+{syn:rst}
 From Vimoutliner::
 
 	cp 1.otl 1.wt
@@ -161,14 +161,14 @@ copy'n'paste is out).
 .			[> Testing]
 .			[_] Switch my personal todo file to wretch
 {----------------------------------------------------------------------}
-{rst}
+{syn:rst}
 2013-05-01, That's nirvana, isn't it?  That's what we came here for.
 {----------------------------------------------------------------------}
 .		Extending
 .		Meta
 .			wretch vs Vimoutliner
 {----------------------------------------------------------------------}
-{rst}
+{syn:rst}
 Why?  First of all: No copy'n'paste of body text with all those [:;<>]
 in front of every line.
 
@@ -207,7 +207,7 @@ in wretch.  As I said, pet peeve.
 .			Alternatives
 .				Vimoutliner
 {----------------------------------------------------------------------}
-{rst}
+{syn:rst}
 There are a couple of places to go to:
 
 	http://www.vim.org/scripts/script.php?script_id=3515
@@ -219,7 +219,7 @@ And dead, dark places, too:
 {----------------------------------------------------------------------}
 .				(VTO)?
 {----------------------------------------------------------------------}
-{rst}
+{syn:rst}
 This page talks about Vim 6.0?
 
 	http://bike-nomad.com/vim/vimoutliner.html

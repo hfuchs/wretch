@@ -2,7 +2,7 @@
 
 " Preample {{{1
 " TODO This is commented out in vimoutliner
-if exists("b:loaded_noutliner")
+if exists("b:loaded_wretch")
     finish
 endif
 " }}}1
@@ -326,7 +326,7 @@ function! InsertBody()
     " To be honest, I'm blowing up the size to avoid 1-line text bodies
     " because they won't be folded nicely.  Also: I like it that way.
     call append('.', "{".repeat('-', &tw-2)."}")
-    call append(line('.')+1, "{rst}")
+    call append(line('.')+1, "{syntax:rst}")
     call append(line('.')+2, "")
     call append(line('.')+3, "{".repeat('-', &tw-2)."}")
     call cursor(line('.')+3, 1)
@@ -426,6 +426,6 @@ endfunction
 " }}}2
 " }}}1
 
-let b:loaded_noutliner = 1
+let b:loaded_wretch = 1
 
 " vim:set foldmethod=marker:foldlevel=0:tw=78
