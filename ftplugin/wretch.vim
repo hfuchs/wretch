@@ -128,7 +128,11 @@ function! MyFoldLevel(line)
         return '>'.(Ind(a:line)+1)
     else
         if ( IsHeading(a:line-1) )
-            return '>' . (Ind(a:line-1)+2)
+            if ( getline(a:line) == "" )   " IsEmptyLine()
+                return 0
+            else
+                return '>' . (Ind(a:line-1)+2)
+            endif
         else
             return '='
         endif
