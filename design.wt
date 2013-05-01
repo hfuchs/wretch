@@ -1,8 +1,12 @@
 .	wretch
 .		Hacking
-.			Version Control
-.				Create github repository
-.				Keep local mirror
+.			[x] 100% Version Control
+.				[x] Create github repository
+{----------------------------------------------------------------------}
+{rst}
+https://github.com/hfuchs/wretch
+{----------------------------------------------------------------------}
+.				[x] Keep local mirror
 .			Reference Docs
 .				5 Minute Vimscript
 {----------------------------------------------------------------------}
@@ -60,9 +64,29 @@ btw: The tmux distribution includes a Bash completion script in::
 	# ln -s /usr/share/doc/tmux/examples/bash_completion_tmux.sh /etc/bash_completion.d/tmux
 
 {----------------------------------------------------------------------}
+.			[Deployment], Staging
+.				[x] Using Vundle
+{----------------------------------------------------------------------}
+{rst}
+By using Vundle, I can use my local repository to test new features and
+push stable versions to Github.  .vimrc entry::
+
+	Bundle 'file:///home/[user]/[project dir]'
+
+Note: *no* trailing slash.  Updates with::
+
+	vim '+BundeInstall!' +qall
+{----------------------------------------------------------------------}
+.				[_] Local vimrc for debugging
 .			TODO
 .				'I' should jump to beginning of heading, not line
-.				Integrate My Interlinking system
+.				[x] Integrate my interlinking system
+{----------------------------------------------------------------------}
+{rst}
+2013-05-01, Copied the functions and bindings verbatim from my
+.vimoutlinerrc.  Works.
+{----------------------------------------------------------------------}
+.				[_] Boost interlink usefulness
 {----------------------------------------------------------------------}
 {rst}
 I'd like to write a command that can deal with region markers.   For
@@ -70,7 +94,11 @@ inspiration, see
 
 	http://stackoverflow.com/questions/8763837/create-a-vim-function-to-prefix-all-lines
 {----------------------------------------------------------------------}
-.				Remove dependency on ts=sw=4
+.				[x] Remove dependency on ts=sw=4
+{----------------------------------------------------------------------}
+{rst}
+2013-05-01, Wasn't half as bad as I thought.
+{----------------------------------------------------------------------}
 .				{rst} -> {syn:rst}
 .				[> Documentation]!
 .				Read More of Steve Losh's vim docs
@@ -99,7 +127,7 @@ wretchmode?  The working name for the first shot was noutliner.
 .			Publicity
 .				Vimoutliner mailing list
 .				HN
-.			Distribution
+.			Distribution, [> Deployment]
 .			Package Management
 .			Manual Installation
 .			[Documentation]
@@ -117,10 +145,26 @@ https://www.gandi.net/hosting/simple?type=phpmysql
 How about `wretch.io`_?  The only one not currently taken.
 Fallback?  There's always hfuchs.net/wretch, of course.
 {----------------------------------------------------------------------}
+.			Migration
+{----------------------------------------------------------------------}
+{rst}
+From Vimoutliner::
+
+	cp 1.otl 1.wt
+	vim 1.wt -u NONE
+	:%s/^\(\t*[^^I;:<>|]\)/.\t\1/cg
+
+Note: the '^I' character is a literal TAB in the command window (so
+copy'n'paste is out).
+{----------------------------------------------------------------------}
 .		Maintaining
 .			[> Testing]
+.			[_] Switch my personal todo file to wretch
+{----------------------------------------------------------------------}
+{rst}
+2013-05-01, That's nirvana, isn't it?  That's what we came here for.
+{----------------------------------------------------------------------}
 .		Extending
-.			Migration
 .		Meta
 .			wretch vs Vimoutliner
 {----------------------------------------------------------------------}
@@ -128,25 +172,37 @@ Fallback?  There's always hfuchs.net/wretch, of course.
 Why?  First of all: No copy'n'paste of body text with all those [:;<>]
 in front of every line.
 
-Referential transparency of body items!  In vimoutliner, I find myself
-moving text blocks around.  Quite often.  Almost everytime I have to
-adapt the indentation level.
+  * Referential transparency of body items!  In vimoutliner, I find
+	myself moving text blocks around.  Quite often.  Almost everytime
+	I have to adapt the indentation level.
 
-Proper syntax highlighting.  Vimoutliner's poor man's markup and
-highlighting gets /really/ old for longer text.
+  * Proper syntax highlighting.  Vimoutliner's poor man's markup and
+	highlighting gets /really/ old for longer text.
 
-That's on the usability front.  Now, speed.
-A pet peeve of mine is the attrocious performance that Vimoutliner shows
-for both folding and checkbox updates.  I have a small 24/7 machine
-(1GHz, 512MB) which, among other things, keeps a vim instance with my
-55.000+ lines todo.otl file open.  Always.  I'm connecting to this
-machine via ssh from all over the world.  Since I hit roughly 40.000
-lines, I have deactivated on-the-fly folding updates because adding
-a new subtree was just too costly.  Same with checkboxes: I never hit
-,,cx anymore for fear of being stuck with an unresponsive vim instance
-that calculates checkbox updates for all the lines far and wide.  By
-design and chance, both the folding and the checkbox update algorithms
-are much simpler and faster in wretch.  As I said, pet peeve.
+  * Support for wide characters.  This is a fold structure from
+    Vimoutliner (taken from my todo)::
+
+	  +Facts & Bits'n'Pieces ------------------------------------- (6572 lines)
+	  +Listen aka [Genüßliches] -------------------------------- (7636 lines)
+
+	Notice the 'üß' atrocity in the second line.  My mother's tongue --
+	what can I do?  Same thing after migration to wretch::
+
+	  .   Facts & Bits'n'Pieces --------------------------------------- (6572)
+	  .   Listen aka [Genüßliches] ------------------------------------ (7636)
+
+That's on the usability front.  Now, speed.  A pet peeve of mine is the
+attrocious performance that Vimoutliner shows for both folding and
+checkbox updates.  I have a small 24/7 machine (1GHz, 512MB) which,
+among other things, keeps a vim instance with my 55.000+ lines todo.otl
+file open.  Always.  I'm connecting to this machine via ssh from all
+over the world.  Since I hit roughly 40.000 lines, I have deactivated
+on-the-fly folding updates because adding a new subtree was just too
+costly.  Same with checkboxes: I never hit ,,cx anymore for fear of
+being stuck with an unresponsive vim instance that calculates checkbox
+updates for all the lines far and wide.  By design and chance, both the
+folding and the checkbox update algorithms are much simpler and faster
+in wretch.  As I said, pet peeve.
 {----------------------------------------------------------------------}
 .			Alternatives
 .				Vimoutliner
