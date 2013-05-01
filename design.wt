@@ -1,0 +1,177 @@
+.	wretch
+.		Hacking
+.			Version Control
+.				Create github repository
+.				Keep local mirror
+.			Reference Docs
+.				5 Minute Vimscript
+{----------------------------------------------------------------------}
+{rst}
+http://andrewscala.com/vimscript/
+{----------------------------------------------------------------------}
+.				[Organizing Vim Plugin Files] for Pathogen & Vundle
+{----------------------------------------------------------------------}
+{rst}
+http://stevelosh.com/blog/2011/09/writing-vim-plugins/#be-pathogen-compatible
+
+In `Learn Vimscript the Hard Way`_ there's a section about »Plugin
+Layout in the Dark Ages«.
+
+.. _Learn Vimscript the Hard Way: http://learnvimscriptthehardway.stevelosh.com/chapters/42.html
+{----------------------------------------------------------------------}
+.				Random
+{----------------------------------------------------------------------}
+{rst}
+Create a create-interlink function that takes ranges?
+http://stackoverflow.com/questions/4452282/vim-pass-a-char-or-word-to-your-function
+http://vim.1045645.n5.nabble.com/Variable-replacement-interpolation-dereferencing-td1193031.html
+
+Using the statusbar for sth useful?
+http://stackoverflow.com/questions/5019499/how-do-i-show-the-time-on-the-statusbar-after-i-do-a-write-in-vim
+
+Outline Processor Markup Language?
+http://en.wikipedia.org/wiki/Opml
+
+http://vim.wikia.com/wiki/Different_syntax_highlighting_within_regions_of_a_file
+{----------------------------------------------------------------------}
+.			Reference Projects
+.			[Testing]
+{----------------------------------------------------------------------}
+{rst}
+While hacking Vimoutliner, I always dreamt of doing fully automatic
+tests using ``screen`` dumps.  So, I do it with tmux::
+
+	tmux capture-pane -t 0 -b 0
+	tmux list-buffers
+	tmux save-buffer -b 0 mybuf1
+	cat mybuf1
+
+Now do it from without::
+
+	tmux new -s wretchtest -d 'vim todo.wretch'
+	tmux list-sessions
+	tmux capture-pane -t wretchtest:0.0
+	tmux new-window   -t wretchtest:1
+	tmux send-keys    -t wretchtest:1 "tmux save-buffer -b 0 mybuf1" C-m
+	cat mybuf1
+
+btw: The tmux distribution includes a Bash completion script in::
+
+	# ln -s /usr/share/doc/tmux/examples/bash_completion_tmux.sh /etc/bash_completion.d/tmux
+
+{----------------------------------------------------------------------}
+.			TODO
+.				'I' should jump to beginning of heading, not line
+.				Integrate My Interlinking system
+{----------------------------------------------------------------------}
+{rst}
+I'd like to write a command that can deal with region markers.   For
+inspiration, see
+
+	http://stackoverflow.com/questions/8763837/create-a-vim-function-to-prefix-all-lines
+{----------------------------------------------------------------------}
+.				Remove dependency on ts=sw=4
+.				{rst} -> {syn:rst}
+.				[> Documentation]!
+.				Read More of Steve Losh's vim docs
+.				Priorities, Timestamps, etc
+.				[_] [Implement "insert date"]
+.				[x] Implement insert mode mappings
+.				[x] It's "headings", not "titles"!
+{----------------------------------------------------------------------}
+{rst}
+That way I can use ,,t for "time" (whatever that may be).  Oh and, [>
+Implement "insert date"].
+{----------------------------------------------------------------------}
+.			Ideas
+.				,,T
+This should open a heading on the same level as the current heading, but
+below all of its children.  Or should this simply be the default
+behaviour?
+.				Script-tag, execute with ,,r
+.		Publishing
+.			Name
+{rst}
+I'm pretty much settled on wretch.  What else is there?
+wretchmode?  The working name for the first shot was noutliner.
+
+2013-04-30, outceptional.  Fell through the cracks.
+.			Publicity
+.				Vimoutliner mailing list
+.				HN
+.			Distribution
+.			Package Management
+.			Manual Installation
+.			[Documentation]
+.			Hosting
+.				Provider
+.					gandi.net
+{----------------------------------------------------------------------}
+{rst}
+They still seem nice.  Simple Hosting?  Comes with ssh and git.
+https://www.gandi.net/hosting/simple?type=phpmysql
+{----------------------------------------------------------------------}
+.				Name
+{----------------------------------------------------------------------}
+{rst}
+How about `wretch.io`_?  The only one not currently taken.
+Fallback?  There's always hfuchs.net/wretch, of course.
+{----------------------------------------------------------------------}
+.		Maintaining
+.			[> Testing]
+.		Extending
+.			Migration
+.		Meta
+.			wretch vs Vimoutliner
+{----------------------------------------------------------------------}
+{rst}
+Why?  First of all: No copy'n'paste of body text with all those [:;<>]
+in front of every line.
+
+Referential transparency of body items!  In vimoutliner, I find myself
+moving text blocks around.  Quite often.  Almost everytime I have to
+adapt the indentation level.
+
+Proper syntax highlighting.  Vimoutliner's poor man's markup and
+highlighting gets /really/ old for longer text.
+
+That's on the usability front.  Now, speed.
+A pet peeve of mine is the attrocious performance that Vimoutliner shows
+for both folding and checkbox updates.  I have a small 24/7 machine
+(1GHz, 512MB) which, among other things, keeps a vim instance with my
+55.000+ lines todo.otl file open.  Always.  I'm connecting to this
+machine via ssh from all over the world.  Since I hit roughly 40.000
+lines, I have deactivated on-the-fly folding updates because adding
+a new subtree was just too costly.  Same with checkboxes: I never hit
+,,cx anymore for fear of being stuck with an unresponsive vim instance
+that calculates checkbox updates for all the lines far and wide.  By
+design and chance, both the folding and the checkbox update algorithms
+are much simpler and faster in wretch.  As I said, pet peeve.
+{----------------------------------------------------------------------}
+.			Alternatives
+.				Vimoutliner
+{----------------------------------------------------------------------}
+{rst}
+There are a couple of places to go to:
+
+	http://www.vim.org/scripts/script.php?script_id=3515
+	https://github.com/vimoutliner/vimoutliner
+
+And dead, dark places, too:
+
+	http://www.vimoutliner.org/
+{----------------------------------------------------------------------}
+.				(VTO)?
+{----------------------------------------------------------------------}
+{rst}
+This page talks about Vim 6.0?
+
+	http://bike-nomad.com/vim/vimoutliner.html
+
+And the vim.org page was last updated in 2006:
+
+	http://vim.sourceforge.net/scripts/script.php?script_id=517
+
+Dead, like?
+{----------------------------------------------------------------------}
+.				Emacs Org-Mode
