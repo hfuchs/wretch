@@ -325,10 +325,9 @@ endfunction
 function! InsertBody()
     " To be honest, I'm blowing up the size to avoid 1-line text bodies
     " because they won't be folded nicely.  Also: I like it that way.
-    call append('.', "{".repeat('-', &tw-2)."}")
     call append(line('.')+1, "{syntax:rst}")
     call append(line('.')+2, "")
-    call append(line('.')+3, "{".repeat('-', &tw-2)."}")
+    call append(line('.')+3, "{----------}")
     call cursor(line('.')+3, 1)
     normal! zv
     startinsert!
