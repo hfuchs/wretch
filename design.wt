@@ -40,10 +40,11 @@ http://vim.wikia.com/wiki/Different_syntax_highlighting_within_regions_of_a_file
 {----------------------------------------------------------------------}
 .			Reference Projects
 .			[Testing]
+.				Initial Thoughts.
 {----------------------------------------------------------------------}
 {syn:rst}
 While hacking Vimoutliner, I always dreamt of doing fully automatic
-tests using ``screen`` dumps.  So, I do it with tmux::
+tests using ``screen`` dumps.  So, naturally, I turn to ``tmux``::
 
 	tmux capture-pane -t 0 -b 0
 	tmux list-buffers
@@ -64,7 +65,24 @@ btw: The tmux distribution includes a Bash completion script in::
 	# ln -s /usr/share/doc/tmux/examples/bash_completion_tmux.sh /etc/bash_completion.d/tmux
 
 {----------------------------------------------------------------------}
-.			[Deployment], Staging
+.				Implementation
+{syntax:rst}
+2013-05-10, Just finished implementing ``run_tests``.  Looks juicy to
+me.
+{----------}
+.			[Deployment]
+.				Vundle compatibility
+{----------------------------------------------------------------------}
+{syntax:rst}
+Vundle and Pathogen compatibility is easy:
+http://learnvimscriptthehardway.stevelosh.com/chapters/43.html
+{----------------------------------------------------------------------}
+.				Stand-alone
+{----------------------------------------------------------------------}
+{syntax:rst}
+By special request.
+{----------------------------------------------------------------------}
+.			Staging
 .				[x] Using Vundle
 {----------------------------------------------------------------------}
 {syn:rst}
@@ -84,7 +102,8 @@ Note: *no* trailing slash.  Updates with::
 {----------------------------------------------------------------------}
 {syn:rst}
 2013-05-01, Copied the functions and bindings verbatim from my
-.vimoutlinerrc.  Works.
+.vimoutlinerrc.  Works.  ``run_tests`` and watch out for the test named
+.'1_interlinking'.
 {----------------------------------------------------------------------}
 .				[_] Boost interlink usefulness
 {----------------------------------------------------------------------}
@@ -166,7 +185,7 @@ copy'n'paste is out).
 {----------------------------------------------------------------------}
 .		Extending
 .		Meta
-.			wretch vs Vimoutliner
+.			[wretch vs Vimoutliner]
 {----------------------------------------------------------------------}
 {syn:rst}
 Why?  First of all: No copy'n'paste of body text with all those [:;<>]
@@ -191,6 +210,9 @@ in front of every line.
 	  .   Facts & Bits'n'Pieces --------------------------------------- (6572)
 	  .   Listen aka [Genüßliches] ------------------------------------ (7636)
 
+  * I frequently use things like [φ] which vimoutliner would turn into
+    [_] even more frequently.
+
 That's on the usability front.  Now, speed.  A pet peeve of mine is the
 attrocious performance that Vimoutliner shows for both folding and
 checkbox updates.  I have a small 24/7 machine (1GHz, 512MB) which,
@@ -203,6 +225,9 @@ being stuck with an unresponsive vim instance that calculates checkbox
 updates for all the lines far and wide.  By design and chance, both the
 folding and the checkbox update algorithms are much simpler and faster
 in wretch.  As I said, pet peeve.
+
+On the development side, I'm inconceivably proud of my [> Testing]
+setup.
 {----------------------------------------------------------------------}
 .			Alternatives
 .				Vimoutliner
