@@ -1,0 +1,10 @@
+" 2013-05-10, A minimal vimrc in order to run the tests in tests/ with
+" only wretch loaded.
+
+" The vimrc /has/ to remain in the project root and run_tests /has/ to
+" be called from there as well.  I'm lazy.
+set runtimepath+=.
+set nocompatible
+
+syntax on
+filetype plugin indent on

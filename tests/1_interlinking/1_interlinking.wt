@@ -1,0 +1,14 @@
+2013-05-08, TODO
+
+.	[Head One]
+{syntax:rst}
+2013-05-08, Here's a one-word link to [> target].
+
+Split links happen often when the link points to a multi-word target: [> Head
+One].
+
+There's yet another special case.  This used to not work with my old code: [>
+target]
+{----------}
+.		sub 1
+.		[target]

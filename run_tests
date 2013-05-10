@@ -1,0 +1,49 @@
+#!/bin/bash
+# 2013-05-10, Created by H Fuchs <code@hfuchs.net>
+#
+# Run all wretch tests in tests/ using heavy-handed tmux magic.
+
+# Tests /have/ to be run from the wretch project dir root.  See
+# vimrc.tests for the reason.
+[ -f "vimrc.tests" ] || { echo "Call me from project root."; exit 1; }
+
+for testdir in $(find tests/* -type d); do
+    [ ! -d "$testdir" ] && continue
+    testname=$(basename $testdir)
+    echo $testname ...
+
+    trap "tmux kill-session -t $testname; rm -f /tmp/$testname.$$" EXIT INT KILL
+
+    # "sessions should be nested with care, unset $TMUX to force"
+    unset TMUX
+
+    # Open test file in a real, ptty-attached Vim.
+    # For some reason I have to specify dimensions although the man page
+    # clearly states that 80 by 24 is the default when using -d.
+    tmux new -d -s $testname -x 80 -y 28
+
+    # Send commands.  This is obviously going to be test-specific, so
+    # I'm sourcing the commands from the test directory.
+    # TODO These files need to know their surroundings (eg. variable
+    # names like $testname).  Is there a better and only slightly less
+    # convenient way?
+    . $testdir/$testname.sh
+
+    # Dump screen.
+    #tmux list-sessions
+    tmux capture-pane -b 0 -t $testname:0.0
+    #tmux list-buffers
+    tmux save-buffer -b 0 /tmp/$testname.$$
+    # TODO Make this, err, more accessible.  I'm thinking - *gasp* -
+    # commandline arguments.
+    #cp /tmp/$testname.$$ $testdir/$testname.new
+
+    # Compare with known-good output.
+    diff /tmp/$testname.$$ $testdir/$testname.good
+
+    # End Vim without bloodshed.
+    tmux send-keys -t $testname:0 ":q!" C-m
+done
+
+# TODO Display summary.  Using √ and × with nifty term colors, even?
+
