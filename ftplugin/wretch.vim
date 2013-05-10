@@ -362,15 +362,15 @@ function! JumpToTargetID()
     " separator (l:sep).
     let l:sep     = '!:-:!'
     let l:lines   = join( getline( line('.') - 1 , line('.') + 1 ), l:sep )
-    let l:pattern = '\m\[-\?>\s\+\([^\[\]]\+\)\]'
+    let l:pattern = '\m\[-\?>\s*\([^\[\]]\+\)\]'
     let l:links   = [[]]
     let l:timeout = 1000
 
     " Ugly special test necessary with the multi-line approach: Don't
     " jump if there's no bracket character on /this/ line (would
     " otherwise jump also if only the adjacent lines had links).
-    if match(getline('.'), '[\[\]]') == -1
-        echo "No ID found on this line."
+    if ( match(getline('.'), '[\[\]]') == -1 )
+        echom "No ID found on this line."
         return
     endif
 
@@ -385,7 +385,7 @@ function! JumpToTargetID()
             " search() later without magic, so I quote everything here).
             let l:end    = matchend(l:lines, l:pattern, 0, l:i) - len(l:sep)
             let l:id     = matchstr(l:lines, l:pattern, 0, l:i)
-            let l:target = substitute(l:id, l:sep.'\s*:\?\s\+', ' ', '')
+            let l:target = substitute(l:id, l:sep.'\s*:\?\s*', ' ', '')
             let l:target = substitute(l:target, l:pattern, '\\\[\1\\\]', '')
             let l:links += [[ l:begin, l:end, l:target ]]
             let l:i += 1
@@ -398,7 +398,7 @@ function! JumpToTargetID()
 
     " If the list is still empty, quit now.
     if l:links == [[]]
-        echo "No ID found on this line."
+        echom "Can't find link target.  Misspelled?"
         return
     else
         call remove(l:links, 0)
@@ -411,7 +411,7 @@ function! JumpToTargetID()
     for l:link in l:links
         if index(range(l:link[0], l:link[1]), l:cursorpos) != -1
             if search(l:link[2], 'sw', 0, l:timeout) == 0
-                echo "Target ID not found!"
+                echom "Target ID not found!"
             endif
             return
         endif
@@ -419,7 +419,7 @@ function! JumpToTargetID()
 
     " If the cursor's positioned elsewhere, use the last jumpID.
     if search(l:links[-1][2], 'sw', 0, l:timeout) == 0
-        echo "Target ID not found!"
+        echom "Target ID not found!"
     endif
 endfunction
 " }}}2
