@@ -15,7 +15,8 @@ for testdir in $(find tests/* -type d); do
     testname=$(basename $testdir)
     echo $testname ...
 
-    trap "tmux kill-session -t $testname; rm -f /tmp/$testname.$$" EXIT INT KILL
+    trap "tmux kill-session -t $testname 2> /dev/null;
+    rm -f /tmp/$testname.$$" EXIT INT KILL
 
     # "sessions should be nested with care, unset $TMUX to force"
     unset TMUX
@@ -45,7 +46,9 @@ for testdir in $(find tests/* -type d); do
     diff /tmp/$testname.$$ $testdir/$testname.good
 
     # End Vim without bloodshed.
-    tmux send-keys -t $testname:0 ":q!" C-m
+    tmux send-keys -t $testname:0 ':q!' C-m
+    tmux kill-session -t $testname
+    rm -f /tmp/$testname.$$
 done
 
 # TODO Display summary.  Using √ and × with nifty term colors, even?
