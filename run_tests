@@ -3,10 +3,13 @@
 #
 # Run all wretch tests in tests/ using heavy-handed tmux magic.
 
+# --- Sanity
 # Tests /have/ to be run from the wretch project dir root.  See
 # vimrc.tests for the reason.
-[ -f "vimrc.tests" ] || { echo "Call me from project root."; exit 1; }
+[ -f "vimrc.tests" ]   || { echo "Call me from project root."; exit 1; }
+[ -x "$(which tmux)" ] || { echo "Cannot find tmux."; exit 2; }
 
+# --- Main
 for testdir in $(find tests/* -type d); do
     [ ! -d "$testdir" ] && continue
     testname=$(basename $testdir)
