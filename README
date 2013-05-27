@@ -2,28 +2,77 @@ wretch
 =================
 
 One poor sod's surprisingly superior note keeping, outlining and general
-life maintenance tool (also: vim plugin).
+life maintenance tool.
 
-Alright, now that the marketing angle has been dealt with, what is it,
-really?  An Outliner.  Actually the second best damn outliner that I've
-come across yet.  And I've seen 'em all.  Most.  At least three.  The
-only better outliner in existence is Emacs' Org mode.  But if you were
-one of our Emacs-using overlords, you would not be shopping around for
-an alternative outliner, now would you?
+Also, a Vim plugin (with a nice little test harness).  In order to decide
+whether or not this is for you, ask yourself:
 
-Who is it for?  If you happen to have a file of 50.000+ lines that you
-absolutely need to keep together to represent one mother of an outline,
-then /you/.  It might even be useful if you're throwing together
-a shopping list, who knows?
+    Have I been unhappy with Vimoutliner lately?
+
+If so, give it a try, because wretch
+
+  + sports non-indented body text with arbitray syntax highlighting;
+  + integrates a frightfully simple interlinking system; and
+  + is just /faster/ (still not as fast as it could be)
+
+This makes Vimoutliner more of a hierarchical document store, in
+a way[4].  If you have no idea what I'm talking about, go read the
+Mission Statement below (not sure that's any better, though).  Now,
+
+
+Installation
+-----------------------------------------
+
+For very good reasons, there are two ways to get wretch up and running:
+
+  + Use Pathogen or Vundle; or
+  + say `make install` (will /not/ touch your .vimrc!)
+
+I've even provided `make uninstall`.  Make sure you have at least
+
+    syntax on
+    filetype plugin indent on
+
+in your .vimrc.  That's it.  Try `vim design.wt` now!
+
+
+Tests
+-----------------------------------------
+
+I'm /really/ proud about my test harness.  Since clever folding is 75%
+of wretch's appeal (the other 25% being non-indented body text), simply
+comparing buffers[3] isn't going to cut it.  That's why I invented the
+
+    tmux-leveraging console application test workflow™
+
+Say `make test` and weep.
+
+
+Vanity/Mission Statement
+-----------------------------------------
+
+wretch, eh?  What is it?
+
+An Outliner.  Actually the second best damn outliner that I've come
+across yet.  And I've seen 'em all.  Most.  Three at least.  The only
+better outliner in existence is Emacs' Org mode, I'd wager.  But if you
+were one of our Emacs-using overlords, you would not be shopping around
+for an alternative outliner, now would you?
+
+Who is it for?  Realistically, users that have out-grown Vimoutliner in
+the same general direction that I did.  I /really/ think you should give
+Vimoutliner a try if you haven't.  In any case, if you're stuborn and
+you happen to have a file of 50.000+ lines that you absolutely need to
+keep together to represent one mother of an outline, then by all means,
+go ahead.  It might even be useful if you're throwing together a shopping
+list, who knows?
 
 Why did I write it?  Simply out of frustration with the /fantastic/
-Vimoutliner[0].  Ah, I see - website's down.  Well, if you can take it,
-use the one from vim.org[1] or take a look at the github page[2].
-Vimoutliner is truly great and fully delivers what it's tagline, 'Work
-fast, think well', promises.  At least on the 'work fast' part.  I just
-grew tired of it's limitations-by-design: weak body text formatting
-possibilities and unfortunate performance characteristics.
-"Unfortunate"?  Waddaya expect, I'm not gonna go thrashing a piece of
+Vimoutliner[0].  Vimoutliner is truly great and fully delivers what it's
+tagline, 'Work fast, think well', promises.  At least as regards the
+'work fast' part.  I just grew tired of it's limitations-by-design: weak
+body text formatting possibilities and unfortunate performance
+characteristics.  Waddaya expect, I'm not gonna go thrashing a piece of
 software I've been in love with for 4+ years.
 
 What's the deal?  One day in the future I hope to have a shiny website.
@@ -37,8 +86,14 @@ It really does.
 
 
 [0] http://vimoutliner.org/
+    (Ah, I see - website's down.  Well, if you can take it, use the one
+    from vim.org,[1] or take a look at the github page[2].)
 
 [1] http://www.vim.org/scripts/script.php?script_id=3515
 
 [2] https://github.com/vimoutliner/vimoutliner
 
+[3] http://www.vim.org/scripts/script.php?script_id=2565
+    (runVimTests : A testing framework for Vim)
+
+[4] Kinda like a filesystem - just in a file.  I like filesystems.
