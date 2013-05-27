@@ -8,6 +8,7 @@
 # vimrc.tests for the reason.
 [ -f "vimrc.tests" ]   || { echo "Call me from project root."; exit 1; }
 [ -x "$(which tmux)" ] || { echo "Cannot find tmux."; exit 2; }
+[ -x "$(which vim)" ]  || { echo "Errr... no Vim?!"; exit 3; }
 
 # --- Main
 for testdir in $(find tests/* -type d); do
@@ -35,9 +36,8 @@ for testdir in $(find tests/* -type d); do
 
     # Dump screen.
     #tmux list-sessions
-    tmux capture-pane -b 0 -t $testname:0.0
+    tmux capture-pane -p -t $testname:0.0 > /tmp/$testname.$$
     #tmux list-buffers
-    tmux save-buffer -b 0 /tmp/$testname.$$
     # TODO Make this, err, more accessible.  I'm thinking - *gasp* -
     # commandline arguments.
     #cp /tmp/$testname.$$ $testdir/$testname.new
