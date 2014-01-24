@@ -27,4 +27,12 @@ If your distribution doesn't come with this file (hint: it does), see
 ==============================================================================
 Installation                                                        *wt-install*
 
-TODO
+The Git repository is easily consumable by the plugin-management plugins
+Pathogen and Vundle.  In addition, it is possible to simply say
+
+    make install
+
+to deploy the plugin in your ~/.vim/ tree.  Note, that there is an 'uninstall'
+target, too.
+
+
