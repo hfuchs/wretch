@@ -9,6 +9,9 @@ One].
 
 There's yet another special case.  This used to not work with my old code: [>
 target]
+
+I wasn't paying attention to special characters: [> ~/dir]
 {----------}
 .		sub 1
 .		[target]
+.		[~/dir]
