@@ -1,0 +1,54 @@
+#!/bin/bash
+# 2014-02-01, Created by H Fuchs <code@hfuchs.net>
+#
+# Create known-good output for run_tests.
+# Needless to say: rampant code duplication.  Just as I like it.
+
+# --- Sanity
+# Tests /have/ to be run from the wretch project dir root.  See
+# vimrc.tests for the reason.
+[ -f "vimrc.tests" ]   || { echo "Call me from project root."; exit 1; }
+[ -x "$(which tmux)" ] || { echo "Cannot find tmux."; exit 2; }
+[ -x "$(which vim)" ]  || { echo "Errr... no Vim?!"; exit 3; }
+
+# --- Main
+for testdir in $(find tests/* -type d); do
+    [ ! -d "$testdir" ] && continue
+    testname=$(basename $testdir)
+    echo $testname ...
+
+    trap "tmux kill-session -t $testname 2> /dev/null;
+    rm -f /tmp/$testname.$$" EXIT INT KILL
+
+    # "sessions should be nested with care, unset $TMUX to force"
+    unset TMUX
+
+    # Open test file in a real, ptty-attached Vim.
+    # For some reason I have to specify dimensions although the man page
+    # clearly states that 80 by 24 is the default when using -d.
+    tmux new -d -s $testname -x 80 -y 28
+
+    # Send commands.  This is obviously going to be test-specific, so
+    # I'm sourcing the commands from the test directory.
+    # TODO These files need to know their surroundings (eg. variable
+    # names like $testname).  Is there a better and only slightly less
+    # convenient way?
+    . $testdir/$testname.sh
+
+    # Dump screen.
+    #tmux list-sessions
+    tmux capture-pane -p -t $testname:0.0 > /tmp/$testname.$$
+    #tmux list-buffers
+    # TODO Make this, err, more accessible.  I'm thinking - *gasp* -
+    # commandline arguments.
+    #cp /tmp/$testname.$$ $testdir/$testname.new
+
+    # Create known-good output.
+    cp /tmp/$testname.$$ $testdir/$testname.good
+
+    # End Vim without bloodshed.
+    tmux send-keys -t $testname:0 ':q!' C-m
+    tmux kill-session -t $testname
+    rm -f /tmp/$testname.$$
+done
+
