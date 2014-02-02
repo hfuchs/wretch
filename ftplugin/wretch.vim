@@ -383,6 +383,8 @@ function! JumpToTargetID()
             " The two substitute()s simply normalize multi-line links
             " and create valid target IDs (I can't figure out how to
             " search() later without magic, so I quote everything here).
+            " TODO I know about \V now, but I still seem to need those
+            " lines.
             let l:end    = matchend(l:lines, l:pattern, 0, l:i) - len(l:sep)
             let l:id     = matchstr(l:lines, l:pattern, 0, l:i)
             let l:target = substitute(l:id, l:sep.'\s*:\?\s*', ' ', '')
@@ -406,11 +408,11 @@ function! JumpToTargetID()
 
     " Check whether the cursor is placed inside of one of the links and
     " jump there if so (search()'s 's' parameter sets a jump mark to get
-    " back with ^o).
+    " back with ^o).   Also, use the no-magic flag (\V) in all searches!
     let l:cursorpos = getpos(".")[2] + strlen( getline( line('.') - 1 ) )
     for l:link in l:links
         if index(range(l:link[0], l:link[1]), l:cursorpos) != -1
-            if search(l:link[2], 'sw', 0, l:timeout) == 0
+            if search('\V'.l:link[2], 'sw', 0, l:timeout) == 0
                 echom "Target ID not found!"
             endif
             return
@@ -418,7 +420,7 @@ function! JumpToTargetID()
     endfor
 
     " If the cursor's positioned elsewhere, use the last jumpID.
-    if search(l:links[-1][2], 'sw', 0, l:timeout) == 0
+    if search('\V'.l:links[-1][2], 'sw', 0, l:timeout) == 0
         echom "Target ID not found!"
     endif
 endfunction
