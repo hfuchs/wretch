@@ -5,6 +5,15 @@
 syntax clear
 syntax case ignore
 
+" 2014-03-27, syntax/rst.vim loads a goodish few more syntax files,
+" among them syntax/lisp.vim, which redefines 'iskeyword'.  And that, in
+" turn, makes editing rst documents with Umlauts rather more painful
+" than strictly necessary.  This is a workaround which doesn't break
+" much, only the highlighting of '^.. code:: {lisp|perl|python|...}'
+" blocks.  I didn't even know these existed, so I ain't even sad.
+" NOTE: This is a bug in syntax/rst.vim in my learned opinion.
+let g:rst_syntax_code_list=[]
+
 " LoadSyntaxes() {{{1
 " Dynamically load syntax highlighting 'xyz' for text blocks that start
 " with {syntax:xyz}.
