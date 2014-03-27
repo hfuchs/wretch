@@ -6,5 +6,8 @@
 set runtimepath+=.
 set nocompatible
 
+" This is more usually set in debian.vim (see /etc/vim/vimrc).
+set backspace=indent,eol,start
+
 syntax on
 filetype plugin indent on
