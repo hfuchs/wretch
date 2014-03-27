@@ -81,4 +81,10 @@ highlight noutBody        ctermbg=DarkBlue
 highlight noutBodyLimits  ctermfg=DarkGrey
 " }}}1
 
+" 2014-03-27, Ha!  All this time I was using ccomment-style syntax
+" syncing.  The constant-line/time approach satisfies me for now.
+" This needs to come at the end of all that syntax-loading logic.
+syntax sync clear
+syntax sync minlines=100
+
 " vim:foldmethod=marker
