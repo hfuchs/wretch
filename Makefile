@@ -10,3 +10,5 @@ uninstall:
 test:
 	sh run_tests
 
+test-update:
+	sh update_tests
