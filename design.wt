@@ -67,6 +67,9 @@ btw: The tmux distribution includes a Bash completion script in::
 {----------------------------------------------------------------------}
 .				Implementation
 {syntax:rst}
+2014-06-12, There's a ``update_tests`` now, too.  Nice when something
+changes globally and all the known-good states need to be updated.
+
 2013-05-10, Just finished implementing ``run_tests``.  Looks juicy to
 me.
 {----------}
@@ -95,9 +98,36 @@ Note: *no* trailing slash.  Updates with::
 
 	vim '+BundeInstall!' +qall
 {----------------------------------------------------------------------}
-.				[_] Local vimrc for debugging
+.				[x] Local vimrc for debugging
 .			TODO
-.				'I' should jump to beginning of heading, not line
+.				[x] Umlauts are word separators?
+{syntax:rst}
+2014-06-12, See README and regression test in tests/3_proper_movement/
+{----------}
+.				[_] More status symbols than [x-_]?
+{syntax:rst}
+2013-06-06, I could use "waiting", "deprecated" and others.
+Perhaps now's the time to look at that silly book?
+{----------}
+.				[_] Body lines starting with '...'!
+.				[_] Do I really need '^.\t\+' instead of '^.\t*[^\s]'?
+.				[_] Expand meta-system beyond {syntax:...}: compile!
+{syntax:rst}
+2013-05-25, For compilation, I'd like to put everything between
+markers into a temporary buffer.  Vim calls 'em scratch buffers:
+http://stackoverflow.com/questions/8790263/always-create-scratch-buffer-on-vim-startup
+https://github.com/kana/vim-scratch/blob/master/autoload/scratch.vim
+http://vim.wikia.com/wiki/Vim_buffer_FAQ
+
+2013-05-10, Examples that come to mind are:
+
+  + {compile:pdflatex --shell-escape}
+  + {categories:Books>Horror|Books>Best}
+
+Perhaps ,,m(eta) would fit the bill?  Insert a selection of possible
+meta blocks?
+{----------}
+.				[_] 'I' should jump to beginning of heading, not line
 .				[x] Integrate my interlinking system
 {----------------------------------------------------------------------}
 {syn:rst}
@@ -105,6 +135,14 @@ Note: *no* trailing slash.  Updates with::
 .vimoutlinerrc.  Works.  ``run_tests`` and watch out for the test named
 .'1_interlinking'.
 {----------------------------------------------------------------------}
+.				[_] Interlinks: What links here? (backlinks)
+.				[_] Interlinks: Wrong jumps
+{syntax:rst}
+2013-06-06, Currently this fails (jumps to [> Testing]):
+  + cursor here: >_<  link here[> Documentation]
+  + another link: [> Testing]
+{----------}
+.				[_] Interlinks: Completion!
 .				[_] Boost interlink usefulness
 {----------------------------------------------------------------------}
 {syn:rst}
@@ -118,11 +156,15 @@ inspiration, see
 {syntax:rst}
 2013-05-01, Wasn't half as bad as I thought.
 {----------------------------------------------------------------------}
-.				{rst} -> {syn:rst}
-.				[> Documentation]!
-.				Read More of Steve Losh's vim docs
-.				Priorities, Timestamps, etc
-.				[_] [Implement "insert date"]
+.				[x] {rst} -> {syn:rst}
+.				[_] [> Documentation]!
+.				[_] ,,H
+This should open a heading on the same level as the current heading, but
+below all of its children.  Or should this simply be the default
+behaviour?
+.				[_] Read More of Steve Losh's vim docs
+.				[_] Priorities, Timestamps, etc
+.				[x] [Implement "insert date"]
 .				[x] Implement insert mode mappings
 .				[x] It's "headings", not "titles"!
 {----------------------------------------------------------------------}
@@ -131,11 +173,17 @@ That way I can use ,,t for "time" (whatever that may be).  Oh and, [>
 Implement "insert date"].
 {----------------------------------------------------------------------}
 .			Ideas
-.				,,T
-This should open a heading on the same level as the current heading, but
-below all of its children.  Or should this simply be the default
-behaviour?
-.				Script-tag, execute with ,,r
+.				Virtual Buffers!
+{syntax:rst}
+2013-05-11, Something I have dreamt of for an eternity:  Edit multiple
+files in /one/ buffer.  The file need only be opened when the
+corresponding fold is opened.
+
+Emacs, of course, seems to have a concept of this idea:
+http://www.gnu.org/software/emacs/manual/html_node/elisp/Swapping-Text.html
+{----------}
+.				Script-tag, execute with ,,r (or ,,x)
+.				Timer, start/stop with ,,s and ,,S
 .		Publishing
 .			Name
 {syn:rst}
@@ -229,6 +277,10 @@ in wretch.  As I said, pet peeve.
 On the development side, I'm inconceivably proud of my [> Testing]
 setup.
 {----------------------------------------------------------------------}
+.				Compare wretch & outliner
+{syntax:rst}
+2013-05-11, Nice example in section [OPIE]
+{----------}
 .			Alternatives
 .				Vimoutliner
 {----------------------------------------------------------------------}
