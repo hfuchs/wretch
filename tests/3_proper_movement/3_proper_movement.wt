@@ -1,0 +1,5 @@
+.	[Motörhead]
+{syntax:rst}
+This body is necessary: without including it, the rst syntax wouldn't be
+loaded.
+{----------}

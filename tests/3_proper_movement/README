@@ -1,0 +1,7 @@
+2014-06-12, I discovered, much to my chagrin, that syntax/rst.vim
+unconditionally loads a couple of other synteces.  Among these is
+syntax/lisp.vim which modifies is_keyword and prohibits proper word
+movements (among other things) in ReST-documents.  I'll fix that in
+wretch (by assigning an empty list to g:rst_syntax_code_list).
+Hence this regression test.
+
