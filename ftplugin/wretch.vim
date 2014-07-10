@@ -357,14 +357,20 @@ endfunction
 " '<localleader>j') will jump to the (nearest) occurence of [string].
 " Really simple but rather effective.
 function! JumpToTargetID()
-    " For links that spread over two lines, we need to take the previous
-    " and next line in consideration and join these with a special
-    " separator (l:sep).
-    let l:sep     = '!:-:!'
-    let l:lines   = join( getline( line('.') - 1 , line('.') + 1 ), l:sep )
+    " General parameters (like shape of the regexp for interlinks).
     let l:pattern = '\m\[-\?>\s*\([^\[\]]\+\)\]'
     let l:links   = [[]]
     let l:timeout = 1000
+
+    " For links that spread over two lines, we need to take the previous
+    " and next line in consideration and join these with a special
+    " separator (l:sep).  Note, however, that we do this only if we
+    " *can't* find one complete interlink on this line!
+    let l:sep     = '!:-:!'
+    let l:lines   = getline( line('.') )
+    if ( match(getline('.'), l:pattern ) == -1 )
+        let l:lines   = join( getline( line('.') - 1 , line('.') + 1 ), l:sep )
+    endif
 
     " Ugly special test necessary with the multi-line approach: Don't
     " jump if there's no bracket character on /this/ line (would
