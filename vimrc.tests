@@ -5,6 +5,7 @@
 " be called from there as well.  I'm lazy.
 set runtimepath+=.
 set nocompatible
+set formatoptions+=cro
 
 " This is more usually set in debian.vim (see /etc/vim/vimrc).
 set backspace=indent,eol,start
