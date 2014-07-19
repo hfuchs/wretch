@@ -100,6 +100,12 @@ Note: *no* trailing slash.  Updates with::
 {----------------------------------------------------------------------}
 .				[x] Local vimrc for debugging
 .			TODO
+.				[x] ,,- should work in insert mode, too
+{syntax:rst}
+2014-07-16, Turns out, it *is* rather straightforward.
+2014-06-12, Not as simple as one would think.  What exactly is supposed
+to be happening when I'm in a body element?
+{----------}
 .				[x] Umlauts are word separators?
 {syntax:rst}
 2014-06-12, See README and regression test in tests/3_proper_movement/
