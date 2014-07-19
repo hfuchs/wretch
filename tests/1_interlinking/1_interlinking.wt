@@ -11,6 +11,10 @@ There's yet another special case.  This used to not work with my old code: [>
 target]
 
 I wasn't paying attention to special characters: [> ~/dir]
+
+2014-07-19, Multiple links per line are supposed to have well-defined
+behaviour: When positioned inside the braces, jump to there, else jump
+to the last target on the line: [> target], [> Head One].
 {----------}
 .		sub 1
 .		[target]

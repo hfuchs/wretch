@@ -1,27 +1,27 @@
-.   [Head One]  (14)
-~
-~
-~
-~
-~
-~
-~
-~
-~
-~
-~
-~
-~
-~
-~
-~
-~
-~
+One].
+
+There's yet another special case.  This used to not work with my old code: [>
+target]
+
+I wasn't paying attention to special characters: [> ~/dir]
+
+2014-07-19, Multiple links per line are supposed to have well-defined
+behaviour: When positioned inside the braces, jump to there, else jump
+to the last target on the line: [> target], [> Head One].
+{----------}
+.       sub 1
+.       [target]
+.       [~/dir]
 ~
 ~
 ~
 ~
 ~
 Messages maintainer: Bram Moolenaar <Bram@vim.org>
-"tests/1_interlinking/1_interlinking.wt" 17L, 371C
+"tests/1_interlinking/1_interlinking.wt" 21L, 571C
+"tests/1_interlinking/1_interlinking.wt" line 20 of 21 --95%-- col 4-1
+"tests/1_interlinking/1_interlinking.wt" line 3 of 21 --14%-- col 3-1
+"tests/1_interlinking/1_interlinking.wt" line 20 of 21 --95%-- col 4-1
+"tests/1_interlinking/1_interlinking.wt" line 21 of 21 --100%-- col 4-1
+"tests/1_interlinking/1_interlinking.wt" line 20 of 21 --95%-- col 4-1
 Press ENTER or type command to continue
