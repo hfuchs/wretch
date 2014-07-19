@@ -60,9 +60,10 @@ inoremap <silent><buffer>  <localleader>h    <C-o>:call InsertHeading()<CR>
 nnoremap <silent><buffer>  <localleader>h    :call InsertHeading()<CR>
 inoremap <silent><buffer>  <localleader>b    <C-o>:call InsertBody()<CR>
 nnoremap <silent><buffer>  <localleader>b    :call InsertBody()<CR>
-noremap <silent><buffer>   <localleader><    :call ShiftHeading('<')<CR>
-noremap <silent><buffer>   <localleader>>    :call ShiftHeading('>')<CR>
-noremap <silent><buffer>   <localleader>-    :call InsertDivider()<CR>
+inoremap <silent><buffer>  <localleader>-    <C-o>:call InsertDivider()<CR><Down><End><CR>
+nnoremap <silent><buffer>  <localleader>-    :call InsertDivider()<CR>
+noremap  <silent><buffer>  <localleader><    :call ShiftHeading('<')<CR>
+noremap  <silent><buffer>  <localleader>>    :call ShiftHeading('>')<CR>
 " }}}1
 " Interlinking Mappings {{{1
 nnoremap <buffer> <localleader>j :call JumpToTargetID()<CR>
@@ -312,13 +313,20 @@ endfunction
 " }}}2
 " InsertDivider {{{2
 function! InsertDivider()
-    let l:refline = FindPreviousHeading(line('.'))
-    if ( l:refline == -1 )
-        call setline('.', '.	'.repeat('-', &tw-&sw-1)
+    let l:div = repeat('-', 40)
+
+    if IsHeading(line('.'))
+        call append('.', substitute(getline('.'), '^\(\.\t*\).*$', '\1'.l:div, ''))
     else
-        let l:div = repeat('-', 40)
-        call append('.', substitute(getline(l:refline), '^\(\.\t*\).*$', '\1'.l:div, ''))
+        call append('.', l:div)
     endif
+    " let l:refline = FindPreviousHeading(line('.'))
+    " if ( l:refline == -1 )
+    "     call setline('.', '.	'.repeat('-', &tw-&sw-1)
+    " else
+    "     let l:div = repeat('-', 40)
+    "     call append('.', substitute(getline(l:refline), '^\(\.\t*\).*$', '\1'.l:div, ''))
+    " endif
 endfunction
 " }}}2
 " InsertBody {{{2
