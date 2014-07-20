@@ -23,5 +23,5 @@ Messages maintainer: Bram Moolenaar <Bram@vim.org>
 "tests/1_interlinking/1_interlinking.wt" line 3 of 21 --14%-- col 3-1
 "tests/1_interlinking/1_interlinking.wt" line 20 of 21 --95%-- col 4-1
 "tests/1_interlinking/1_interlinking.wt" line 21 of 21 --100%-- col 4-1
-"tests/1_interlinking/1_interlinking.wt" line 20 of 21 --95%-- col 4-1
+"tests/1_interlinking/1_interlinking.wt" line 20 of 21 --95%-- col 4-9
 Press ENTER or type command to continue
