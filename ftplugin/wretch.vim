@@ -372,13 +372,9 @@ function! JumpToTargetID()
 
     " For links that spread over two lines, we need to take the previous
     " and next line in consideration and join these with a special
-    " separator (l:sep).  Note, however, that we do this only if we
-    " *can't* find one complete interlink on this line!
+    " separator (l:sep).
     let l:sep     = '!:-:!'
-    let l:lines   = getline( line('.') )
-    if ( match(getline('.'), l:pattern ) == -1 )
-        let l:lines   = join( getline( line('.') - 1 , line('.') + 1 ), l:sep )
-    endif
+    let l:lines   = join( getline( line('.') - 1 , line('.') + 1 ), l:sep )
 
     " Ugly special test necessary with the multi-line approach: Don't
     " jump if there's no bracket character on /this/ line (would
@@ -388,17 +384,24 @@ function! JumpToTargetID()
         return
     endif
 
-    " Find all occurences of pattern in string and note their position.
+    " Find all occurences of the link pattern in the combined lines and
+    " note their position (begin and end).
     let l:i = 1
     while l:i
         let l:begin = match(l:lines, l:pattern, 0, l:i)
         if l:begin != -1
+            " Determine the beginning of a pattern and immediately stop
+            " collecting links if it's on the third line (the one below
+            " the cursor): on the third line, we're only ever interested
+            " in continuations of links from the current line.
             let l:begin -= len(l:sep)
+            let l:maxbegin = strlen( getline( line('.') - 1 ) . getline( line('.') ) )
+            if l:begin > l:maxbegin
+                break
+            endif
             " The two substitute()s simply normalize multi-line links
-            " and create valid target IDs (I can't figure out how to
-            " search() later without magic, so I quote everything here).
-            " TODO I know about \V now, but I still seem to need those
-            " lines.
+            " and create valid target IDs (even with \V, I seem to need
+            " to quote heavily in search()es).
             let l:end    = matchend(l:lines, l:pattern, 0, l:i) - len(l:sep)
             let l:id     = matchstr(l:lines, l:pattern, 0, l:i)
             let l:target = substitute(l:id, l:sep.'\s*:\?\s*', ' ', '')
@@ -433,7 +436,8 @@ function! JumpToTargetID()
         endif
     endfor
 
-    " If the cursor's positioned elsewhere, use the last jumpID.
+    " If the cursor's not positioned smack in the middle of a link, use
+    " the last (even partial) link *on* the line the cursor is on!
     if search('\V'.l:links[-1][2], 'sw', 0, l:timeout) == 0
         echom "Target ID not found!"
     endif
