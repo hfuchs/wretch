@@ -274,11 +274,15 @@ function! UpdateBox(lineno)
     let l:total   = 0
 
     for i in range( a:lineno+1, line('$') )
-        " First, test whether the line's a text element (indentation: -3
-        " [don't ask]), then skip if indentation is lower than my
-        " children's (next heading, higher hierarchy) and then, and only
-        " if the indentation level's the same, count the boxes.
-        if ( Ind(i) == -3 )
+        " First, disregard any line that's part of a text element,
+        " indentation level -3, or an invalid heading, indentation -1.
+        " [Don't just sit there wtf'ing all over the place, real thought
+        " went into this!]
+        " Next, abort the count completely if any heading's indentation
+        " is lower than my children's (heading of higher hierarchy) and
+        " then, and only if the indentation level's the same, count the
+        " boxes.
+        if ( Ind(i) < 0 )
             continue
         elseif ( Ind(i) < l:childind )
             break
@@ -288,7 +292,8 @@ function! UpdateBox(lineno)
         endif
     endfor
 
-    call SetRatioOrCheck(a:lineno, l:checked * 100 / l:total)
+    let l:ratio = l:checked * 100 / l:total
+    call SetRatioOrCheck(a:lineno, l:ratio)
 
     call UpdateBox( FindParent(a:lineno) )
 endfunction
