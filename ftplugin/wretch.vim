@@ -84,13 +84,18 @@ endfunction
 "}}}2
 " IsHeading {{{2
 function! IsHeading(line)
-    return ( match( getline(a:line), '^\.\t\+' ) != -1 )
+    " 2015-07-21, Profiling madness!  match() might be costly?  It is!
+    " 450099 calls, match: 8.3 sec, strpart: 5.8, stridx: 6.5
+    " strpart() it is!
+    " return ( match( getline(a:line), '^\.\t\+' ) != -1 )
+    return ( strpart(getline(a:line), 0, 2) == ".\t" )
+    " return ( stridx(getline(a:line), ".\t") == 0 )
 endfunction
 " }}}2
 " FindParent(line) {{{2
 function! FindParent(line)
     for i in range(a:line,1,-1)
-        if ( Ind(i) == -3 )
+        if ( Ind(i) < 0 )
             continue
         elseif ( ( Ind(i) < Ind(a:line) ) && IsHeading(i) )
             return i
@@ -124,19 +129,18 @@ endfunction
 " level.  This is the most surprising and pleasing part: the runtime
 " behaviour is orders of magnitude better than Vimoutliner's (because of
 " the simplified design).
+"
+" 2015-07-21, Even with the simplified approach, this function is easily
+" the worst offender, says vim's profiler.  Bit of rearranging and
+" inlining IsHeading() cuts profiled runtime to 65%.  Good enough, eh?
 function! MyFoldLevel(line)
-    if ( IsHeading(a:line) )
-        return '>'.(Ind(a:line)+1)
+    if ( strpart(getline(a:line), 0, 2) == ".\t" )
+        return '>' . (Ind(a:line)+1)
+    elseif ( strpart(getline(a:line-1), 0, 2) == ".\t" )
+        return '>' . (Ind(a:line-1)+2)
     else
-        if ( IsHeading(a:line-1) )
-            if ( getline(a:line) == "" )   " IsEmptyLine()
-                return 0
-            else
-                return '>' . (Ind(a:line-1)+2)
-            endif
-        else
-            return '='
-        endif
+        " 'Avoid', the vimdocs say.  Yeah, well, how?
+        return '='
     endif
 endfunction
 " }}}2
