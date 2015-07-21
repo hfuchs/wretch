@@ -1,5 +1,9 @@
 " Licence: GPL 3, Copyright (C) 2013 by Hagen Fuchs
 
+" Override in your vimrc.  In retrospect, "mail" would've been
+" a sensible choice.
+let g:wretch_default_body_type = "rst"
+
 " TODO Ideally, I'd like to link to the user's own colorscheme, not
 " enforce my own.
 syntax clear
@@ -71,7 +75,7 @@ endfunction
 
 " Make sure that at least the 'rst' syntax file gets loaded because
 " that's what InsertBody() uses by default.
-call LoadSyntaxes({'rst':1})
+call LoadSyntaxes({ g:wretch_default_body_type : 1})
 
 "" TODO How do I deal with things like `setlocal foldmethod=syntax` in syntax/perl.vim?
 setlocal foldmethod=expr

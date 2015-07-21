@@ -13,6 +13,8 @@ set backspace=indent,eol,start
 syntax on
 filetype plugin indent on
 
+"let g:wretch_default_body_type = "mail"
+
 " Profiling, remember to move the file away for comparisons.
 "profile start vim.profile
 "profile! file *wretch*

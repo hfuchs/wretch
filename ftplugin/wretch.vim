@@ -9,6 +9,8 @@ endif
 
 " Parameters, Globals and Redefinitions. {{{1
 let maplocalleader = ",,"
+" Note, g:wretch_default_body_type is set in syntax/wretch.vim as it's
+" loaded earlier.
 
 "setlocal backspace=2
 "setlocal wrapmargin=5
@@ -342,7 +344,7 @@ endfunction
 function! InsertBody()
     " To be honest, I'm blowing up the size to avoid 1-line text bodies
     " because they won't be folded nicely.  Also: I like it that way.
-    call append(line('.'), "{syntax:rst}")
+    call append(line('.'), "{syntax:".g:wretch_default_body_type."}")
     call append(line('.')+1, "")
     call append(line('.')+2, "{----------}")
     call cursor(line('.')+2, 1)
