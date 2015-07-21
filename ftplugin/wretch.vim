@@ -139,7 +139,11 @@ function! MyFoldLevel(line)
     if ( strpart(getline(a:line), 0, 2) == ".\t" )
         return '>' . (Ind(a:line)+1)
     elseif ( strpart(getline(a:line-1), 0, 2) == ".\t" )
-        return '>' . (Ind(a:line-1)+2)
+        if ( getline(a:line) == "" )
+            return 0
+        else
+            return '>' . (Ind(a:line-1)+2)
+        endif
     else
         " 'Avoid', the vimdocs say.  Yeah, well, how?
         return '='
