@@ -7,7 +7,7 @@ life maintenance tool.
 Also, a Vim plugin (with a nice little test harness).  In order to decide
 whether or not this is for you, ask yourself:
 
-    Have I been unhappy with Vimoutliner lately?
+    Have I been unhappy with my outliner lately?
 
 If so, give it a try, because wretch
 
@@ -45,8 +45,19 @@ comparing buffers[3] isn't going to cut it.  That's why I invented the
 
     tmux-leveraging console application test workflow™
 
-Say `make test` and weep.
+Say `make test`.  I promise you, you'll weep of joy (sparsely seasoned
+with incredulity) when you dive into the mechanics of it (run_tests).
 
+
+Hacking
+-----------------------------------------
+
+In short, use::
+
+    vim -u vimrc.tests
+
+for testing wretch.vim in isolation (without any effects from ~/.vimrc).
+There are ready-made profiling instructions in vimrc.tests, too (see there).
 
 Vanity/Mission Statement
 -----------------------------------------
@@ -62,8 +73,8 @@ for an alternative outliner, now would you?
 Who is it for?  Realistically, users that have out-grown Vimoutliner in
 the same general direction that I did.  I /really/ think you should give
 Vimoutliner a try if you haven't.  In any case, if you're stuborn and
-you happen to have a file of 50.000+ lines that you absolutely need to
-keep together to represent one mother of an outline, then by all means,
+you happen to need to organise 125.000+ lines worth of personal information
+(as I do) or want to represent one mother of an outline, then by all means,
 go ahead.  It might even be useful if you're throwing together a shopping
 list, who knows?
 
