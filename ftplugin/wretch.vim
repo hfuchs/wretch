@@ -25,12 +25,15 @@ setlocal foldlevel=0
 setlocal foldmethod=expr
 setlocal foldexpr=MyFoldLevel(v:lnum)
 " TODO vimoutlinersens claim that setlocal wouldn't work with this line
-set foldtext=MyFoldText()
+setlocal foldtext=MyFoldText()
 " Suppress that neverending string of dashes after the fold texts.
 setlocal fillchars="fold: "
 "setlocal indentexpr=
 "setlocal nocindent
+"setlocal nosmartindent
 setlocal autoindent
+setlocal copyindent
+" TODO What's up with that TAB protection racket?
 setlocal comments+=:.	" don't delete this comment - it protects the TAB!
 "setlocal iskeyword=@,39,45,48-57,_,129-255
 " }}}1
@@ -57,7 +60,10 @@ map <silent><buffer>   <localleader>cx    :call ToggleCheckbox(line('.'),'')<CR>
 map <silent><buffer>   <localleader>c-    :call ToggleCheckbox(line('.'),'-')<CR>
 " }}}1
 " Convenience Mappings {{{1
-" TODO ,,T: Insert heading below current body?
+" To be honest, this TAB-overloading business?  'Tis a bit of a crutch:
+" for some reason, the rst-bodies do not work well with mixed TAB and
+" space indentations.  As soon as I know why, this line is gone.
+inoremap <silent><buffer>  <TAB>             <C-R>=IsBody(line('.')) ? repeat(" ", &ts) : "\t"<CR>
 inoremap <silent><buffer>  <localleader>h    <C-o>:call InsertHeading()<CR>
 nnoremap <silent><buffer>  <localleader>h    :call InsertHeading()<CR>
 inoremap <silent><buffer>  <localleader>b    <C-o>:call InsertBody()<CR>
@@ -84,6 +90,11 @@ function! Ind(line)
     return matchend( getline(a:line), '^\.\t*' ) - 2
 endfunction
 "}}}2
+" IsBody {{{2
+function! IsBody(line)
+    return ( strpart(getline(a:line), 0, 1) != "." )
+endfunction
+" }}}2
 " IsHeading {{{2
 function! IsHeading(line)
     " 2015-07-21, Profiling madness!  match() might be costly?  It is!
